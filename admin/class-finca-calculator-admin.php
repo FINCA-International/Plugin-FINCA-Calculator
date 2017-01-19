@@ -93,7 +93,41 @@ class Finca_Calculator_Admin {
 	 */
 	public function finca_calcultor_admin_area(){
 
-		echo "<h1>FINCA Online calculator</h1><hr>";
+	echo '<div class="wrap">';
+
+		// include header
+		require plugin_dir_path( __FILE__ ) . 'template/finca-calculator-header.php';
+
+		$tab = 'tab1'; // default tab
+
+		// available tabs
+		$tabs = [
+			'products' => ['path' => 'global/products'],
+			'currency' => ['path' => 'global/currency']
+		];
+
+		// check if valid tab is set in the url
+		if(isset($_GET['tab'])){
+
+			// clean get params
+			$getTab = htmlspecialchars($_GET['tab']);
+
+			// check if tab exists
+			if(array_key_exists($getTab, $tabs)){
+
+				// Include the tab file 
+				//require plugin_dir_path( __FILE__ ) . 'template/finca-calculator-header.php';
+				require plugin_dir_path( __FILE__ ) . $tabs[$getTab]['path'] . '.php';
+				
+			}
+
+		}
+
+	echo '</div>';
+
+	?>
+
+	<?php
 
 	}
 

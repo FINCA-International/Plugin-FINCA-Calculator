@@ -58,6 +58,16 @@ class FINCA_Calculator {
 	protected $version;
 
 	/**
+	 * Subsidiary code
+	 *
+	 * @since    1.0.0
+	 * @access   protected
+	 * @var      string    $subsidiary    Subsidiary code
+	 */
+	protected $subsidiary;
+
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -70,6 +80,7 @@ class FINCA_Calculator {
 
 		$this->plugin_name = 'finca-calculator';
 		$this->version = '1.0.0';
+		$this->subsidiary = 'kg';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -165,8 +176,10 @@ class FINCA_Calculator {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Finca_Calculator_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new Finca_Calculator_Public( $this->get_plugin_name(), $this->get_version(), $this->get_subsidiary() );
 
+		// Se incluyen assets unicamente cuando se invoca el shortcode "finca-calculator"
+		// ver public/class-finca-calculator.public.php
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
@@ -210,6 +223,16 @@ class FINCA_Calculator {
 	 */
 	public function get_version() {
 		return $this->version;
+	}
+
+	/**
+	 * Retrieve the subsidiary code.
+	 *
+	 * @since     1.0.0
+	 * @return    string    The subsidiary code
+	 */
+	public function get_subsidiary() {
+		return $this->subsidiary;
 	}
 
 }

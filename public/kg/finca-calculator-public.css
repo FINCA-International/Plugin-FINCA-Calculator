@@ -1,0 +1,106 @@
+/* Form style */
+.finca-calculator-kg .calculator table
+.finca-calculator-kg .calculator table th
+.finca-calculator-kg .calculator table td{
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+.finca-calculator-kg .calculator{
+	background-color: #f5f7f8;
+	padding: 15px;
+	padding-bottom: 50px;
+}
+
+.finca-calculator-kg .calculator table{
+	display: inline-block;
+	vertical-align: top;
+}
+
+.finca-calculator-kg .calculator table.calculator_form{
+	width: 370px;
+}
+
+.finca-calculator-kg .calculator table.calculator_form label{
+	display: block;
+	min-width: 155px;
+	color: #7c7c7c;
+	font-weight: 400;
+}
+
+.finca-calculator-kg .calculator table.calculator_form input,
+.finca-calculator-kg .calculator table.calculator_form select{
+	width: 200px;
+	padding: 4px 0px;
+	border-width: 1px;
+	border-color: #ccc;
+}
+
+
+.finca-calculator-kg .calculator table.calculator_form button{
+	width: 200px;
+	padding: 3px 0px;
+	border-color: rgb(200,200,200);
+	background-color: rgb(181,9,56);
+	color: rgb(250,250,250);
+}
+
+.finca-calculator-kg .calculator table.calculator_form button:hover{
+	cursor: pointer;
+}
+
+.finca-calculator-kg .calculator table.calculator_form .amount > div{
+	display: inline;
+}
+
+.finca-calculator-kg .calculator table.calculator_form .amount select{
+	width: 65px;
+}
+
+.finca-calculator-kg .calculator table.calculator_form .amount input{
+	width: 130px;
+}
+
+.finca-calculator-kg .calculator table.calculator_resume{
+	width: 225px;
+	margin-left: 20px;
+}
+
+.finca-calculator-kg .calculator table.calculator_resume thead th{
+
+}
+
+.finca-calculator-kg .calculator table.calculator_resume th{
+	width: 100px;
+	color: #1d1d1d;
+}
+
+.finca-calculator-kg .calculator table.calculator_resume td{
+	text-align: right;
+	color: #1d1d1d;
+}
+
+.finca-calculator-kg .result thead tr th,
+.finca-calculator-kg .result tbody tr td{
+	text-align: center;
+	padding: 5px 0px;
+}
+
+.finca-calculator-kg .result thead tr th{
+	background-color: rgb(181,9,56);
+	color:#fff;
+	
+}
+
+.finca-calculator-kg .result  tbody tr:nth-child(even){
+	background-color: #FFC388;
+	background-color: rgb(240,240,240);
+}
+.finca-calculator-kg .result  tbody tr td{
+	color: #1d1d1d;
+}
+
+.finca-calculator-kg .result  tfoot tr td{
+	text-align: right;
+	font-weight: bold;
+}

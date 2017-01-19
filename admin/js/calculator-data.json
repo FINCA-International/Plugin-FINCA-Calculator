@@ -1,0 +1,32 @@
+{
+	"products": [
+		{
+			"name": "product 1",
+			"soom": true,
+			"usd": true,
+			"ruble":true,
+			"replenishment_anytime":true,
+			"replanishment_recurring":true,
+			"withdrawal": true,
+			"timeframe": {
+				"from": 3,
+				"to": 36
+			},
+			"amount_init_minimal": {
+				"soom": 5000,
+				"usd": 100,
+				"ruble": 10000
+			},
+			"amount_init_maximal": {
+				"soom": 999999,
+				"usd": 999999,
+				"ruble": 999999
+			},
+			"amount_replenishment_minimal": {
+				"soom": 1,
+				"usd": 1,
+				"ruble": 1
+			}
+		}
+	]
+}
