@@ -1,11 +1,13 @@
 var finca_calculator_app_kg = angular.module('finca-calculator-app-kg', []);
-finca_calculator_app_kg.controller('finca-calculator-app-kg-controller', function ($scope) {
+finca_calculator_app_kg.controller('finca-calculator-app-kg-controller', function ($scope, $filter) {
 
-	$scope.depositProducts = data_calculator.products;
+	$scope.depositProducts = savings_data_product;
 	$scope.depositProduct = $scope.depositProducts[0];
 
-	$scope.depositCurrencies = data_calculator.currencies;
-	$scope.depositCurrency = data_calculator.currencies[0];
+	$scope.depositProductRates = savings_data_product_rates;
+
+	$scope.depositCurrencies = savings_data_currency;
+	$scope.depositCurrency = $scope.depositCurrencies[0];
 
 	$scope.depositFields = {
 		"amount_principal":
@@ -81,7 +83,13 @@ finca_calculator_app_kg.controller('finca-calculator-app-kg-controller', functio
 
 	}
 
+	// set initial values
+	$scope.initialValues = function(depositProductRate){
 
+		$scope.depositFields.term.value = depositProductRate.period;
+		$scope.depositFields.amount_principal.value = depositProductRate.amount_min;
+
+	}
 
 	// move to js library
 
@@ -98,12 +106,49 @@ finca_calculator_app_kg.controller('finca-calculator-app-kg-controller', functio
         //return number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
     }
 
+    $scope.getDepositInterestRate = function(product, term, amount){
+
+    	var product;
+
+    	var products = $filter('filter')($scope.depositProductRates,
+    		{ "product_id": product.toString() }, true);
+
+    	// cantidad de configuraciones para el mismo producto
+    	var products_count = products.length;
+
+    	// plazo maximo del producto
+    	var product_term = 0;
+
+    	// plazo minimo del producto
+    	var product_term_last = 0;
+
+    	for(var i = 0; i < products_count; i++){
+
+    		product_term = parseInt(products[i].period);
+
+			//if(product_term_last <= term && term <= product_term) {
+			if( product_term_last <= term && term <= product_term &&
+				amount <= products[i].amount_max)
+			{
+
+				// Toma el producto que tiene el rango de meses
+				product = products[i];
+
+				// stop for loop
+				break;
+
+			}		
+
+			// term of the last product configuration
+			product_term_last = product_term +1;
+
+    	}
+
+		return product;
+
+    }
 
 	$scope.depositCalculatorMain = function(){
-
-		// Debug
-		//console.log(data_calculator);
-		// */
 
 		var date = document.getElementById('startdate').value;
 		date = moment(date, "DD/MM/YYYY");
@@ -118,6 +163,8 @@ finca_calculator_app_kg.controller('finca-calculator-app-kg-controller', functio
 		var term = $scope.depositFields.term.value;
 		var amount_principal = $scope.toNumber($scope.depositFields.amount_principal.value);
 		var amount_replenishment = $scope.toNumber($scope.depositFields.amount_replenishment.value);
+		
+
 		var amount_interest_accumulated = 0;
 		var month_no = 1;
 		var global_amount_principal =0;
@@ -127,6 +174,7 @@ finca_calculator_app_kg.controller('finca-calculator-app-kg-controller', functio
 
 		for(var i = 1; i <= term; i++){
 
+			var product_rate_settings = $scope.getDepositInterestRate($scope.depositProduct.id, term, global_amount_principal);
 
 			// fecha anterior y fecha actual
 			var datelast = date;
@@ -136,14 +184,13 @@ finca_calculator_app_kg.controller('finca-calculator-app-kg-controller', functio
 			// dias entre fechas
 			var daysdiff = date.diff(datelast, 'days');
 
-
 			// porcentaje anual de interes
-			var interest_percent_annual = $scope.depositProduct.interest_percent_annual / 100;
-			var interest_percent_annual_bonus = $scope.depositProduct.interest_percent_bonus / 100;
+			var interest_percent_annual = parseFloat(product_rate_settings.interest) / 100;
+			var interest_percent_annual_bonus = $scope.toNumber(product_rate_settings.interest_bonus) / 100;
 
 
 			// porcentaje de interes segun saldo de capital
-			var amount_interest = daysdiff * interest_percent_annual * amount_principal / 360;
+			var amount_interest = daysdiff * interest_percent_annual * amount_principal / 365;
 
 			// total global de ahorro
 			global_amount_principal = amount_principal;
@@ -203,13 +250,26 @@ finca_calculator_app_kg.controller('finca-calculator-app-kg-controller', functio
 
 		}
 
+		// Verifica si el producto tiene bono
+		var amount_bonus = 0;
+
+		if(product_rate_settings.interest_bonus > 0){
+			product_rate_settings.interest_bonus = product_rate_settings.interest_bonus / 100;
+			amount_bonus = global_amount_principal * product_rate_settings.interest_bonus;
+
+		}
+
 		$scope.depositResult['global'] = {
 			amount_principal : $scope.prettyView(global_amount_principal),
 			amount_interest : $scope.prettyView(global_amount_interest),
-			amount_balance: $scope.prettyView(global_amount_principal+ global_amount_interest)
+			amount_balance: $scope.prettyView(global_amount_principal+ global_amount_interest),
+			amount_bonus: $scope.prettyView(amount_bonus)
 		}
 
 	}
+
+	// set initial values
+	$scope.initialValues($scope.depositProductRates[0]);
 
 	jQuery( document ).ready(function(){
 

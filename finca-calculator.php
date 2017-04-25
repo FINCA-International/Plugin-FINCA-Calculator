@@ -69,4 +69,5 @@ function run_finca_calculator() {
 	$plugin->run();
 
 }
+
 run_finca_calculator();

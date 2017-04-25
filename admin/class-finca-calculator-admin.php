@@ -103,6 +103,7 @@ class Finca_Calculator_Admin {
 		// available tabs
 		$tabs = [
 			'products' => ['path' => 'global/products'],
+			'product_settings' => ['path' => 'global/product_settings'],
 			'currency' => ['path' => 'global/currency']
 		];
 
@@ -116,7 +117,6 @@ class Finca_Calculator_Admin {
 			if(array_key_exists($getTab, $tabs)){
 
 				// Include the tab file 
-				//require plugin_dir_path( __FILE__ ) . 'template/finca-calculator-header.php';
 				require plugin_dir_path( __FILE__ ) . $tabs[$getTab]['path'] . '.php';
 				
 			}
